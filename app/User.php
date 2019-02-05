@@ -4,10 +4,12 @@ namespace App;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use \App\Relations\ObservableBelongsToMany;
 
 class User extends Authenticatable
 {
-    use Notifiable;
+    use SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -28,6 +30,18 @@ class User extends Authenticatable
     ];
 
     public function projects() {
-        return $this->belongsToMany('\App\Project');
+        $rel = new ObservableBelongsToMany(
+            Project::query(),
+            $this,
+            'project_user',
+            'user_id',
+            'project_id',
+            'id',
+            'id',
+            'ProjectUser'
+        );
+        $rel->using('App\ProjectUser');
+
+        return $rel;
     }
 }
