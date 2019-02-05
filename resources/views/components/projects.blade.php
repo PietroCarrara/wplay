@@ -2,7 +2,7 @@
 
     <div class="row">
         @foreach (Auth::user()->projects as $project)
-            {{ $project->name }}
+            @include('components.project-card', [ 'project' => $project ])
         @endforeach
     </div>
 

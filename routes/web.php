@@ -20,3 +20,7 @@ Route::get('/register', 'AuthController@register')->name('register');
 Route::post('/register', 'AuthController@registerPost')->name('register');
 
 Route::get('/logout', 'AuthController@logout')->name('logout');
+
+Route::get('/project/{id}', function($id) {
+    return $id;
+})->name('project');
