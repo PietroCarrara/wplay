@@ -15,10 +15,8 @@ class ProjectsTableSeeder extends Seeder
             $users = \App\User::All();
 
             // Ordenar aleatóriamente
-            $users->sort(function() {
-                return rand();
-            });
-
+            $users = $users->shuffle();
+            
             // Adicionar usuários no projeto
             for ($i = 0; $i < 5 && $i < $users->count(); $i++) {
                 $project->users()->save($users[$i]);
