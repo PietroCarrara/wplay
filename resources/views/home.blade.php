@@ -8,6 +8,13 @@
         Olá {{ Auth::user()->name }}!
 
         @include('components.projects')
+
+        @if (Auth::user()->role == 'admin')
+            <p class="text-center">
+                Notamos que você é um administrador.<br/>
+                Por que não <a href="{{ route('project.create') }}">cria</a> um projeto?
+            </p>
+        @endif
     @endguest
 </div>
 @endsection

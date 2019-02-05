@@ -22,3 +22,4 @@ Route::post('/register', 'AuthController@registerPost')->name('register');
 Route::get('/logout', 'AuthController@logout')->name('logout');
 
 Route::get('/project/{id}', 'ProjectController@show')->name('project');
+Route::get('/project/create', 'ProjectController@create')->name('project.create');
