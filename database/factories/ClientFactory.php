@@ -1,0 +1,11 @@
+<?php
+
+use Faker\Generator as Faker;
+
+$factory->define(\App\Client::class, function (Faker $faker) {
+    return [
+        'name' => $faker->name,
+        'contact1' => $faker->safeEmail,
+        'contact2' => $faker->phoneNumber,
+    ];
+});
