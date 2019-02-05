@@ -24,7 +24,7 @@
                             <div class="col-md-10">
                                 <select id="clientSelect" id="projectClient" class="form-control" name="client">
                                     <option value="">Selecione um cliente</option>
-                                    @foreach(\App\Client::All() as $client)
+                                    @foreach(\App\Client::get()->sortBy('name') as $client)
                                         <option value="{{ $client->id }}">{{ $client->name }}</option>
                                     @endforeach
                                 </select>
@@ -32,6 +32,7 @@
                             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createClientModal">Criar Cliente</button>
                         </div>
                     </div>
+                    @include('components.users-on-project')
                 </form>
             </div>
         </div>
@@ -43,7 +44,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="createClientModal">Crial novo cliente</h5>
+                <h5 class="modal-title" id="createClientModal">Criar novo cliente</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -102,6 +103,8 @@
 
                 // Fechar a modal
                 $('#createClientModal').modal('hide');
+
+                clientErrors.clear();
             }
         });
     }

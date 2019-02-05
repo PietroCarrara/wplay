@@ -25,8 +25,7 @@ class ClientController extends Controller
             'contact2' => $req->input('contact2'),
         ]);
 
-        // Verificar se a request foi na api
-        if ($req->segment(1) == 'api') {
+        if ($req->ajax()) {
             // Se foi na api, devolve o JSON
             return response()->json($cli);
         } else {
