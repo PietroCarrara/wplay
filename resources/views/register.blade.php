@@ -8,17 +8,7 @@
                 Registrar
             </div>
             <div class="card-body">
-
-                @foreach ($errors->all() as $error)
-                    @if ($loop->first)
-                        <div class="alert alert-danger">
-                    @endif
-                        {{ $error }}<br>
-                    @if ($loop->last)
-                        </div>
-                    @endif
-                @endforeach
-
+                @include('components.errors')
                 <form method="POST">
                     @csrf
                     <div class="form-group">

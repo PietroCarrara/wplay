@@ -8,7 +8,9 @@
                 Criar Projeto
             </div>
             <div class="card-body">
-                <form>
+                @include('components.errors')
+                <form method="POST">
+                    @csrf
                     <div class="form-group">
                         <label for="projectName">Nome</label>
                         <input type="text" class="form-control" id="projectName" name="name" placeholder="Nome Do Projeto">
@@ -33,6 +35,7 @@
                         </div>
                     </div>
                     @include('components.users-on-project')
+                    <button type="submit" class="btn btn-primary">Criar</button>
                 </form>
             </div>
         </div>
