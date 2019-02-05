@@ -6,7 +6,8 @@
     @auth
     <div class="card-footer text-muted">
         <a href="{{ route('project', [ 'id' => $project->id ]) }}" class="card-link">Ver Projeto</a>
-        @if (Auth::user()->role == 'admin')
+
+        @if (Gate::allows('delete-projects'))
         <a class="card-link" style="color: red;">Deletar Projeto</a>
         @endif
     </div>
