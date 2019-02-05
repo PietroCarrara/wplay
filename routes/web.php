@@ -21,5 +21,8 @@ Route::post('/register', 'AuthController@registerPost')->name('register');
 
 Route::get('/logout', 'AuthController@logout')->name('logout');
 
-Route::get('/project/{id}', 'ProjectController@show')->name('project');
 Route::get('/project/create', 'ProjectController@create')->name('project.create');
+Route::get('/project/{id}', 'ProjectController@show')->name('project');
+
+// Rotas para o JS
+Route::post('/api/client/create', 'ClientController@create')->name('api.client.create');

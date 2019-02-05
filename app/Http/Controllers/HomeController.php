@@ -16,7 +16,7 @@ class HomeController extends Controller
             if (Auth::user()->role == 'admin') {
                 $projects = Project::All();
             } else {
-                $projects = Auth()->user->projects;
+                $projects = Auth::user()->projects;
             }
         }
 

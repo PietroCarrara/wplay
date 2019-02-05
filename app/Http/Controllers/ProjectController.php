@@ -16,4 +16,8 @@ class ProjectController extends Controller
             'project' => Project::find($id),
         ]);
     }
+
+    public function create() {
+        return view('create-project');
+    }
 }
