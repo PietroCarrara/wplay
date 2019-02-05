@@ -1,8 +1,10 @@
 @auth
 
     <div class="row">
-        @foreach (Auth::user()->projects as $project)
-            @include('components.project-card', [ 'project' => $project ])
+        @foreach ($projects as $project)
+            <div class="col-md-4">
+                @include('components.project-card', [ 'project' => $project ])
+            </div>
         @endforeach
     </div>
 
