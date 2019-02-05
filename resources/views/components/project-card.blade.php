@@ -7,7 +7,7 @@
     <div class="card-footer text-muted">
         <a href="{{ route('project', [ 'id' => $project->id ]) }}" class="card-link">Ver Projeto</a>
 
-        @if (Gate::allows('delete-projects'))
+        @if (Gate::allows('manage-projects'))
         <a class="card-link" style="color: red;">Deletar Projeto</a>
         @endif
     </div>

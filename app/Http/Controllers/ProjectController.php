@@ -19,12 +19,16 @@ class ProjectController extends Controller
     }
 
     public function create() {
-        return view('create-project');
+        if (Gate::allows('manage-projects')) {
+            return view('create-project');
+        } else {
+            return redirect(route('home'));
+        }
     }
 
     public function createPost(Request $req) {
 
-        if (Gate::denies('create-projects')) {
+        if (Gate::denies('manage-projects')) {
             return response('Unauthorized.', 403);
         }
 

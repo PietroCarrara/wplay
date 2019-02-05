@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Auth;
+use Gate;
 use \App\Project;
 
 class HomeController extends Controller
@@ -13,7 +14,7 @@ class HomeController extends Controller
         $projects = [];
 
         if (Auth::check()) {
-            if (Auth::user()->role == 'admin') {
+            if (Gate::allows('manage-projects')) {
                 $projects = Project::All();
             } else {
                 $projects = Auth::user()->projects;

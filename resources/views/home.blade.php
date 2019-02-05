@@ -9,7 +9,7 @@
 
         @include('components.projects')
 
-        @if (Gate::allows('create-projects'))
+        @if (Gate::allows('manage-projects'))
             <p class="text-center">
                 Notamos que você é um administrador.<br/>
                 Por que não <a href="{{ route('project.create') }}">cria</a> um projeto?
