@@ -6,6 +6,8 @@
         Olá visitante!
     @else
         Olá {{ Auth::user()->name }}!
+
+        @include('components.projects')
     @endguest
 </div>
 @endsection
