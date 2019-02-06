@@ -21,6 +21,9 @@ Route::post('/register', 'AuthController@registerPost')->name('register');
 
 Route::get('/logout', 'AuthController@logout')->name('logout');
 
+Route::post('/project/{id}/tasks', 'TaskController@createPost')->name('project.tasks.create.post');
+Route::get('/project/{projId}/task/{taskId}', 'TaskController@show')->name('project.task');
+
 Route::get('/project/create', 'ProjectController@create')->name('project.create');
 Route::post('/project/create', 'ProjectController@createPost')->name('project.create.post');
 Route::get('/project/{id}', 'ProjectController@show')->name('project');
