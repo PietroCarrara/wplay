@@ -14,6 +14,10 @@ class Project extends Model
         'name', 'description', 'client_id'
     ];
 
+    public function tasks() {
+        return $this->hasMany('App\Task');
+    }
+
     public function users() {
         $rel = new ObservableBelongsToMany(
             \App\User::query(),

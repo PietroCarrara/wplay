@@ -29,6 +29,23 @@ class User extends Authenticatable
         'password', 'remember_token', 'role'
     ];
 
+    public function tasks() {
+        $rel = new ObservableBelongsToMany(
+            \App\Task::query(),
+            $this,
+            'task_user',
+            'user_id',
+            'task_id',
+            'id',
+            'id',
+            'TaskUser'
+        );
+
+        $rel->using('App\TaskUser');
+
+        return $rel;
+    }
+
     public function projects() {
         $rel = new ObservableBelongsToMany(
             Project::query(),

@@ -39,6 +39,22 @@
 <div class="row my-4">
     <div class="col-md-12">
         <h1>Tarefas</h1>
+
+        <div class="row my-4">
+            @foreach($project->tasks as $task)
+                <div class="col-md-3 my-2">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ $task->name }}</h5>
+                            <p class="card-text">{!! nl2br(e($task->description)) !!}</p>
+                            <a href="#" class="card-link">Card link</a>
+                            <a href="#" class="card-link">Another link</a>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+
         @if(Gate::allows('manage-tasks', $project))
         Você pode gerenciar tarefas!
         @else
