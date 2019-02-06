@@ -16,7 +16,7 @@
             </div>
         </div>
         <div class="form-group col-md-4">
-            <label>Usuários Selecionados</label><br />
+            <label>Usuários No Projeto</label><br />
             <small id="selected-empty">Nenhum usuário selecionado ainda.</small>
             <div class="list-group" id="selected-box">
             </div>
@@ -43,6 +43,19 @@ var searchUsers = new UserBox('#search-box',
                                   searchUsers.remove(user);
                               });
 </script>
+
+@if(isset($project))
+{{-- Preencher os usuários que já estão no projeto --}}
+<script async defer>
+document.addEventListener("DOMContentLoaded", function(event) { 
+    var users = @json($project->users);
+    for (var user of users) {
+        searchUsers.onclick(user);
+    }
+});
+</script>
+@endif
+
 <script>
 var searchTask;
 

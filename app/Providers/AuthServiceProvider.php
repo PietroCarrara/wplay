@@ -5,6 +5,8 @@ namespace App\Providers;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
+use \App\Project;
+
 class AuthServiceProvider extends ServiceProvider
 {
     /**
@@ -27,6 +29,14 @@ class AuthServiceProvider extends ServiceProvider
 
         Gate::define('manage-projects', function($user) {
             return $user->role == 'admin';
+        });
+
+        Gate::define('manage-tasks', function($user, Project $proj) {
+            if ($user->roles == 'admin') {
+                return true;
+            } else {
+                return $proj->users->contains($user);
+            }
         });
     }
 }

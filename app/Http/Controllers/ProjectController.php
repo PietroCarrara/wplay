@@ -49,4 +49,48 @@ class ProjectController extends Controller
 
         return redirect(route('project', [ 'id' => $proj->id ]));
     }
+
+    public function editPost(Request $req, $id) {
+
+        if (Gate::denies('manage-projects')) {
+            return response('Unauthorized.', 403);
+        }
+
+        $proj = Project::find($id);
+        if (!$proj) {
+            return respose('Not Found.', 404);
+        }
+
+        $req->validate([
+            'name' => 'required',
+            'description' => 'required',
+            'client' => 'required|exists:clients,id',
+            'projectUsers.*' => 'distinct|exists:users,id',
+        ]);
+
+        $proj->name = $req->input('name');
+        $proj->description = $req->input('description');
+        $proj->client_id = $req->input('client');
+
+        // Adicionar usuários novos
+        foreach($req->input('projectUsers') as $userId) {
+            $user = \App\User::find($userId);
+
+            if (!$proj->users->contains($user)) {
+                $proj->users()->save($user);
+            }
+        }
+
+        $informedUsers = collect($req->input('projectUsers'));
+        // Remover usuários
+        foreach($proj->users as $user) {
+            if(!$informedUsers->contains($user->id)) {
+                $proj->users()->detach($user);
+            }
+        }
+
+        $proj->save();
+
+        return redirect(route('project', [ 'id' => $proj->id ]));
+    }
 }
