@@ -70,7 +70,15 @@
                     <div class="card-body">
                         <h5 class="card-title">{{ $task->name }}</h5>
                         <p class="card-text">{!! nl2br(e($task->description)) !!}</p>
+
                         <a href="{{ route('project.task', [$project->id, $task->id]) }}" class="card-link">Ver Tarefa</a>
+                        @if ($task->project->users->contains(Auth::user()))
+                            @if (!$task->users->contains(Auth::user()))
+                                <a href="{{ route('project.task.join', [$project->id, $task->id]) }}" style="color: green;" class="card-link">Juntar-se</a>
+                            @else
+                                <a href="{{ route('project.task.quit', [$project->id, $task->id]) }}" style="color: red;" class="card-link">Sair</a>
+                            @endif
+                        @endif
                     </div>
                 </div>
             </div>
@@ -78,9 +86,7 @@
         </div>
 
         @if(Gate::allows('manage-tasks', $project))
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createTaskModal">Criar Tarefa</button>
-        @else
-        Você não pode gerenciar tarefas!
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createTaskModal">Criar Tarefa</button>
         @endif
     </div>
 

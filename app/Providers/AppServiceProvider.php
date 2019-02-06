@@ -26,6 +26,7 @@ class AppServiceProvider extends ServiceProvider
         \App\User::observe(\App\Observers\UserObserver::class);
         \App\Project::observe(\App\Observers\ProjectObserver::class);
         \App\Task::observe(\App\Observers\TaskObserver::class);
+        \App\Comment::observe(\App\Observers\CommentObserver::class);
         \App\ProjectUser::observe(\App\Observers\ProjectUserObserver::class);
         \App\TaskUser::observe(\App\Observers\TaskUserObserver::class);
     }

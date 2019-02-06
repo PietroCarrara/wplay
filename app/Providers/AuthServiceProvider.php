@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 use \App\Project;
+use \App\Task;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -37,6 +38,10 @@ class AuthServiceProvider extends ServiceProvider
             } else {
                 return $proj->users->contains($user);
             }
+        });
+
+        Gate::define('comment-task', function($user, Task $task) {
+            return $task->users->contains($user);
         });
     }
 }

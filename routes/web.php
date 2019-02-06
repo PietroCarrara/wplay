@@ -23,6 +23,9 @@ Route::get('/logout', 'AuthController@logout')->name('logout');
 
 Route::post('/project/{id}/tasks', 'TaskController@createPost')->name('project.tasks.create.post');
 Route::get('/project/{projId}/task/{taskId}', 'TaskController@show')->name('project.task');
+Route::get('/project/{projId}/task/{taskId}/join', 'TaskController@joinTask')->name('project.task.join');
+Route::get('/project/{projId}/task/{taskId}/quit', 'TaskController@quitTask')->name('project.task.quit');
+Route::post('/project/{projId}/task/{taskId}/comment', 'TaskController@commentPost')->name('project.task.comment.create.post');
 
 Route::get('/project/create', 'ProjectController@create')->name('project.create');
 Route::post('/project/create', 'ProjectController@createPost')->name('project.create.post');
