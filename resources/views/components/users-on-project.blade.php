@@ -48,7 +48,7 @@ var searchUsers = new UserBox('#search-box',
 {{-- Preencher os usuários que já estão no projeto --}}
 <script async defer>
 document.addEventListener("DOMContentLoaded", function(event) { 
-    var users = @json($project->users);
+    var users = @json($project->users()->orderBy('name')->get());
     for (var user of users) {
         searchUsers.onclick(user);
     }

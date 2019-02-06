@@ -93,4 +93,10 @@ class ProjectController extends Controller
 
         return redirect(route('project', [ 'id' => $proj->id ]));
     }
+
+    public function showAll() {
+        return view('all-projects',[
+            'projects' => Project::All()
+        ]);
+    }
 }
