@@ -61,4 +61,8 @@ class User extends Authenticatable
 
         return $rel;
     }
+
+    public function logs() {
+        return $this->hasMany('App\Log');
+    }
 }

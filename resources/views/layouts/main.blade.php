@@ -37,6 +37,11 @@
                                 <a class="nav-link" href="{{ route('register') }}">Registrar<a>
                             </li>
                         @else
+                            @if(Gate::allows('manage-users'))
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('user.search') }}">Usuários<a>
+                            </li>
+                            @endif
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('project.all') }}">Projetos<a>
                             </li>

@@ -21,6 +21,11 @@ Route::post('/register', 'AuthController@registerPost')->name('register');
 
 Route::get('/logout', 'AuthController@logout')->name('logout');
 
+Route::get('/user/search', 'UserController@search')->name('user.search');
+Route::get('/user/{id}/makeadmin', 'UserController@makeAdmin')->name('user.makeadmin');
+Route::get('/user/{id}/removeadmin', 'UserController@removeAdmin')->name('user.removeadmin');
+Route::get('/user/{id}/report', 'UserController@report')->name('user.report');
+
 Route::get('/project/all', 'ProjectController@showAll')->name('project.all');
 Route::post('/project/{id}/tasks', 'TaskController@createPost')->name('project.tasks.create.post');
 Route::get('/project/{projId}/task/{taskId}', 'TaskController@show')->name('project.task');

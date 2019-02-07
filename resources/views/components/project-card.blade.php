@@ -1,7 +1,7 @@
-<div class="card d-flex my-2" style="height: 200px;">
+<div class="card d-flex my-2">
     <div class="card-body">
         <h5 class="card-title"><strong>{{ $project->name }}</strong></h5>
-        <p class="card-text" style="height: 50px;">{{ $project->description }}</p>
+        <p class="card-text">{!! nl2br(e($project->description)) !!}</p>
     </div>
     @auth
     <div class="card-footer text-muted">
