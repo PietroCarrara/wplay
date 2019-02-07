@@ -6,17 +6,23 @@ function _comment_factory_(Faker $faker) {
     
     $proj = App\Project::All()->random();
 
-    $tasks = $proj->tasks()->get();
     $users = $proj->users()->get();
 
-    // Se o projeto não tem ninguém ou nenhuma tarefa,
-    // procure outro projeto
-    if ($tasks->count() <= 0 || $users->count() <= 0) {
+    // Se o projeto não tem ninguém procure outro
+    if ($users->count() <= 0) {
+        return _comment_factory_($faker);   
+    }
+
+    $user = $users->random();
+    $tasks = $user->tasks()->get();
+
+    // Se o usuário não está em nenhuma tarefa para comentar
+    // procure outro
+    if ($tasks->count() <= 0) {
         return _comment_factory_($faker);   
     }
 
     $task = $tasks->random();
-    $user = $users->random();
     
     return [
         'contents' => $faker->sentence(),
