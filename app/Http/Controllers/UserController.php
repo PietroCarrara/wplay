@@ -86,11 +86,20 @@ class UserController extends Controller
             return redirect()->back()->withErrors('Você não tem permissão para isso');
         }
 
-        $completedTasks = $user->tasks()->onlyTrashed()->get()->count();
+        $controls = [];
+        foreach($user->controls as $control) {
+            // Vamos supor que um login antes das 10:00 da manhã seja um ponto batido
+            if ($control->created_at->hour < 10) {
+                // Vamos contar esse dia nos pontos batidos
+                $controls[] = $control->created_at->format('d/m/Y');
+            }
+        }
+        // Múltiplos logins no mesmo dia são só um ponto batido
+        $controls = array_unique($controls);
 
         return view('user-report', [
             'user' => $user,
-            'completed' => $completedTasks,
+            'controls' => $controls,
         ]);
     }
 }

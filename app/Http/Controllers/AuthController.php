@@ -6,11 +6,13 @@ use Illuminate\Http\Request;
 use Auth;
 use Hash;
 use \App\User;
+use App\UserControl;
 
 class AuthController extends Controller
 {
     public function __construct() {
         $this->middleware('guest')->except('logout');
+        $this->middleware('auth')->only('logout');
     }
 
     public function login() {
@@ -29,6 +31,12 @@ class AuthController extends Controller
         $info = $req->only('email', 'password');
 
         if (Auth::attempt($info)) {
+            UserControl::create([
+                'ip' => $req->ip(),
+                'type' => 'login',
+                'user_id' => Auth::user()->id,
+            ]);
+
             return redirect(route('home'));
         } else {
             return redirect(route('login'))->withErrors('Usuário e/ou senha incorretos!');
@@ -50,10 +58,22 @@ class AuthController extends Controller
 
         Auth::login($usr);
 
+        UserControl::create([
+            'ip' => $req->ip(),
+            'type' => 'login',
+            'user_id' => Auth::user()->id,
+        ]);
+
         return redirect(route('home'));
     }
 
-    public function logout() {
+    public function logout(Request $req) {
+        UserControl::create([
+            'ip' => $req->ip(),
+            'type' => 'logout',
+            'user_id' => Auth::user()->id,
+        ]);
+        
         Auth::logout();
 
         return redirect(route('home'));

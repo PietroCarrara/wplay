@@ -78,6 +78,10 @@ class User extends Authenticatable
         return $rel;
     }
 
+    public function controls() {
+        return $this->hasMany('App\UserControl');
+    }
+
     public function comments() {
         return $this->hasMany('App\Comment');
     }
