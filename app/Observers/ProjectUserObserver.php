@@ -17,11 +17,12 @@ class ProjectUserObserver
      */
     public function created(Project $proj, User $user)
     {
-        Log::create([
-            'user_id' => $user->id,
+        $log = Log::create([
             'project_id' => $proj->id,
-            'message' => "$user->name se juntou ao projeto \"$proj->name\"",
+            'message' => ":users: se juntou ao projeto \":project:\"",
         ]);
+
+        $log->users()->save($user);
     }
 
     /**

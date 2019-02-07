@@ -37,7 +37,7 @@
                             </div>
                         @endif
                         <div class="col-md-10 my-1">
-                            {{ $log->message }}
+                            {!! $log->render() !!}
                         </div>
                         <div class="col-md-2 my-1 text-right">
                             {{ $log->created_at->format('H:i') }}

@@ -14,6 +14,10 @@ class Task extends Model
         'name', 'description', 'project_id'
     ];
 
+    public $dates = [
+        'deleted_at',
+    ];
+
     public function project() {
         return $this->belongsTo('App\Project');
     }
@@ -35,6 +39,23 @@ class Task extends Model
         );
 
         $rel->using('App\TaskUser');
+
+        return $rel;
+    }
+
+    public function votes() {
+        $rel = new ObservableBelongsToMany(
+            \App\User::query(),
+            $this,
+            'task_user_vote',
+            'task_id',
+            'user_id',
+            'id',
+            'id',
+            'votes'
+        );
+
+        $rel->using('App\TaskUserVote');
 
         return $rel;
     }

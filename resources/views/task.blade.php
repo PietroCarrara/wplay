@@ -30,14 +30,26 @@
                 </div>
             </div>
         </div>
+
+        @if ($task->trashed())
+            <strong>Esta tarefa foi concluída em {{ $task->deleted_at->format('d/m/Y H:i') }}</strong>
+        @else
+            <strong>Votos para completar:</strong> {{ $task->votes()->count() }} / {{ ceil($task->users()->count() / 2) }}<br/>
+        @endif
+
         @if (!$task->trashed() && $task->project->users->contains(Auth::user()))
             @if (!$task->users->contains(Auth::user()))
                 <a href="{{ route('project.task.join', [$task->project->id, $task->id]) }}" class="btn btn-success">Juntar-se</a>
             @else
-                <a href="{{ route('project.task.complete', [$task->project->id, $task->id]) }}" class="btn btn-success">Completar</a>
+                @if ($task->votes->contains(Auth::user()))
+                    <a href="{{ route('project.task.vote', [$task->project->id, $task->id]) }}" class="btn btn-warning">Revogar voto</a>
+                @else
+                    <a href="{{ route('project.task.vote', [$task->project->id, $task->id]) }}" class="btn btn-success">Votar para completar</a>
+                @endif
                 <a href="{{ route('project.task.quit', [$task->project->id, $task->id]) }}" class="btn btn-danger">Sair</a>
             @endif
         @endif
+
     </div>
 </div>
 

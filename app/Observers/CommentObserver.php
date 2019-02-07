@@ -15,12 +15,14 @@ class CommentObserver
      */
     public function created(Comment $comment)
     {
-        Log::create([
-            'user_id' => $comment->user->id,
+        $log = Log::create([
+            'comment_id' => $comment->id,
             'task_id' => $comment->task->id,
             'project_id' => $comment->task->project->id,
-            'message' => "{$comment->user->name} comentou na tarefa \"{$comment->task->name}\":\n$comment->contents",
+            'message' => ":users: comentou na tarefa \":task:\":\n:comment:",
         ]);
+
+        $log->users()->save($comment->user);
     }
 
     /**

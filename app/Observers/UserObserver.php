@@ -15,10 +15,11 @@ class UserObserver
      */
     public function created(User $user)
     {
-        Log::create([
-            'user_id' => $user->id,
-            'message' => "$user->name criou sua conta.",
+        $log = Log::create([
+            'message' => ":users: criou sua conta.",
         ]);
+
+        $log->users()->save($user);
     }
 
     /**

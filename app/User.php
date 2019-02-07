@@ -55,9 +55,25 @@ class User extends Authenticatable
             'project_id',
             'id',
             'id',
-            'ProjectUser'
+            'projects'
         );
         $rel->using('App\ProjectUser');
+
+        return $rel;
+    }
+
+    public function votes() {
+        $rel = new ObservableBelongsToMany(
+            Task::query(),
+            $this,
+            'task_user_vote',
+            'user_id',
+            'project_id',
+            'id',
+            'id',
+            'votes'
+        );
+        $rel->using('App\TaskUserVote');
 
         return $rel;
     }
@@ -67,6 +83,6 @@ class User extends Authenticatable
     }
 
     public function logs() {
-        return $this->hasMany('App\Log');
+        return $this->belongsToMany('App\Log');
     }
 }

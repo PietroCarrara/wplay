@@ -1,0 +1,1 @@
+<a href="{{ route('project', $project->id) }}">{{ $project->name }}</a>

@@ -17,7 +17,7 @@ class ProjectObserver
     {
         Log::create([
             'project_id' => $project->id,
-            'message' => "O projeto \"$project->name\" foi criado.",
+            'message' => "O projeto \":project:\" foi criado.",
         ]);
     }
 

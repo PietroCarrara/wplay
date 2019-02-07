@@ -15,12 +15,13 @@ class TaskUserObserver
      */
     public function created(Task $task, User $user)
     {
-        Log::create([
+        $log = Log::create([
             'project_id' => $task->project_id,
             'task_id' => $task->id,
-            'user_id' => $user->id,
-            'message' => "$user->name começou a trabalhar na tarefa \"$task->name\"",
+            'message' => ":users: começou a trabalhar na tarefa \":task:\"",
         ]);
+
+        $log->users()->save($user);
     }
 
     /**
@@ -37,12 +38,13 @@ class TaskUserObserver
      */
     public function deleted(Task $task, User $user)
     {
-        Log::create([
+        $log = Log::create([
             'project_id' => $task->project_id,
             'task_id' => $task->id,
-            'user_id' => $user->id,
-            'message' => "$user->name deixou a tarefa \"$task->name\"",
+            'message' => ":user: deixou a tarefa \":task:\"",
         ]);
+            
+        $log->users()->save($user);
     }
 
     /**

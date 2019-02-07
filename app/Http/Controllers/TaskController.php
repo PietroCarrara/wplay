@@ -96,7 +96,7 @@ class TaskController extends Controller
         ]);
     }
 
-    public function completeTask(Request $req, $projId, $taskId) {
+    public function toggleVoteTask(Request $req, $projId, $taskId) {
         [$proj, $task] = $this->validateIds($projId, $taskId);
 
         if ($task == null || $proj == null) {
@@ -111,7 +111,11 @@ class TaskController extends Controller
             return redirect()->back()->withErrors('Task is already completed');
         }
 
-        $task->delete();
+        if ($task->votes->contains(Auth::user())) {
+            $task->votes()->detach(Auth::user());
+        } else {
+            $task->votes()->save(Auth::user());
+        }
         
         return redirect(route('project.task', [
             $proj->id,
