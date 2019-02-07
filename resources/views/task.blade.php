@@ -30,11 +30,12 @@
                 </div>
             </div>
         </div>
-        @if ($task->project->users->contains(Auth::user()))
+        @if (!$task->trashed() && $task->project->users->contains(Auth::user()))
             @if (!$task->users->contains(Auth::user()))
-                <a href="{{ route('project.task.join', [$task->project->id, $task->id]) }}" class="card-link btn btn-success">Juntar-se</a>
+                <a href="{{ route('project.task.join', [$task->project->id, $task->id]) }}" class="btn btn-success">Juntar-se</a>
             @else
-                <a href="{{ route('project.task.quit', [$task->project->id, $task->id]) }}" class="card-link btn btn-danger">Sair</a>
+                <a href="{{ route('project.task.complete', [$task->project->id, $task->id]) }}" class="btn btn-success">Completar</a>
+                <a href="{{ route('project.task.quit', [$task->project->id, $task->id]) }}" class="btn btn-danger">Sair</a>
             @endif
         @endif
     </div>

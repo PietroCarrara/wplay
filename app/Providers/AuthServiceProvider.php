@@ -41,7 +41,7 @@ class AuthServiceProvider extends ServiceProvider
         });
 
         Gate::define('comment-task', function($user, Task $task) {
-            return $task->users->contains($user);
+            return !$task->trashed() && $task->users->contains($user);
         });
     }
 }

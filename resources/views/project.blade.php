@@ -61,22 +61,38 @@
 
 <div class="row my-4">
     <div class="col-md-12">
-        <h1>Tarefas</h1>
+        <h1>Tarefas em andamento</h1>
 
         <div class="row my-4">
-            @foreach($project->tasks as $task)
+            @forelse($project->tasks as $task)
                 <div class="col-md-4">
                     @include('components.task-card')
                 </div>
-            @endforeach
+            @empty
+                Não há tarefas completadas
+            @endforelse
         </div>
 
         @if(Gate::allows('manage-tasks', $project))
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createTaskModal">Criar Tarefa</button>
         @endif
     </div>
-
 </div>
 
+<div class="row my-4">
+    <div class="col-md-12">
+        <h1>Tarefas completadas</h1>
+
+        <div class="row my-4">
+            @forelse($project->tasks()->onlyTrashed()->get() as $task)
+                <div class="col-md-4">
+                    @include('components.task-card')
+                </div>
+            @empty
+                Não há tarefas completadas
+            @endforelse
+        </div>
+    </div>
+</div>
 
 @endsection

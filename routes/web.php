@@ -26,6 +26,7 @@ Route::post('/project/{id}/tasks', 'TaskController@createPost')->name('project.t
 Route::get('/project/{projId}/task/{taskId}', 'TaskController@show')->name('project.task');
 Route::get('/project/{projId}/task/{taskId}/join', 'TaskController@joinTask')->name('project.task.join');
 Route::get('/project/{projId}/task/{taskId}/quit', 'TaskController@quitTask')->name('project.task.quit');
+Route::get('/project/{projId}/task/{taskId}/complete', 'TaskController@completeTask')->name('project.task.complete');
 Route::post('/project/{projId}/task/{taskId}/comment', 'TaskController@commentPost')->name('project.task.comment.create.post');
 
 Route::get('/project/create', 'ProjectController@create')->name('project.create');

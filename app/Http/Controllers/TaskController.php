@@ -16,16 +16,10 @@ class TaskController extends Controller
     }
 
     public function joinTask($projId, $taskId) {
-        $proj = Project::find($projId);
+        [$proj, $task] = $this->validateIds($projId, $taskId);
 
-        if (!$proj) {
-            return redirect()->back()->withErrors('The informed project does not exist.');
-        }
-
-        $task = $proj->tasks()->where('id', $taskId)->first();
-
-        if (!$task) {
-            return redirect()->back()->withErrors('The informed task does not exist.');
+        if ($proj == null || $task == null) {
+            return redirect()->back()->withErrors('The informed data is not valid.');
         }
 
         if ($proj->users->contains(Auth::user()) && !$task->users->contains(Auth::user())) {
@@ -39,16 +33,10 @@ class TaskController extends Controller
     }
 
     public function quitTask($projId, $taskId) {
-        $proj = Project::find($projId);
+        [$proj, $task] = $this->validateIds($projId, $taskId);
 
-        if (!$proj) {
-            return redirect()->back()->withErrors('The informed project does not exist.');
-        }
-
-        $task = $proj->tasks()->where('id', $taskId)->first();
-
-        if (!$task) {
-            return redirect()->back()->withErrors('The informed task does not exist.');
+        if ($proj == null || $task == null) {
+            return redirect()->back()->withErrors('The informed data is not valid.');
         }
 
         if ($task->users->contains(Auth::user())) {
@@ -60,12 +48,12 @@ class TaskController extends Controller
         ]));
     }
 
-    public function createPost(Request $req, $projectId) {
+    public function createPost(Request $req, $projId) {
 
-        $proj = Project::find($projectId);
+        [$proj] = $this->validateIds($projId);
 
-        if (!$proj) {
-            return redirect()->back()->withErrors('The informed project does not exist.');
+        if ($proj == null) {
+            return redirect()->back()->withErrors('The informed data is not valid.');
         }
 
         if (Gate::denies('manage-tasks', $proj)) {
@@ -80,23 +68,27 @@ class TaskController extends Controller
         $task = Task::create([
             'name' => $req->input('name'),
             'description' => $req->input('description'),
-            'project_id' => $projectId,
+            'project_id' => $projId,
         ]);
 
-        return redirect(route('project.task', [$projectId, $task->id]));
+        if ($proj->users->contains(Auth::user())) {
+            $task->users()->save(Auth::user());
+        }
+
+        return redirect(route('project.task', [$projId, $task->id]));
     }
 
     public function show($projId, $taskId) {
-        $proj = Project::find($projId);
+        $proj = Project::withTrashed()->find($projId);
 
         if (!$proj) {
-            return redirect()->back()->withErrors('The informed project does not exist.');
+            return redirect()->back()->withErrors('The informed data is not valid.');
         }
 
-        $task = $proj->tasks()->where('id', $taskId)->first();
+        $task = $proj->tasks()->withTrashed()->where('id', $taskId)->first();
 
         if (!$task) {
-            return redirect()->back()->withErrors('The informed task does not exist.');
+            return redirect()->back()->withErrors('The informed data is not valid.');
         }
 
         return view('task', [
@@ -104,17 +96,35 @@ class TaskController extends Controller
         ]);
     }
 
-    public function commentPost(Request $req, $projId, $taskId) {
-        $proj = Project::find($projId);
+    public function completeTask(Request $req, $projId, $taskId) {
+        [$proj, $task] = $this->validateIds($projId, $taskId);
 
-        if (!$proj) {
-            return redirect()->back()->withErrors('The informed project does not exist.');
+        if ($task == null || $proj == null) {
+            return redirect()->back()->withErrors('The informed data is not valid.');
         }
 
-        $task = $proj->tasks()->where('id', $taskId)->first();
+        if (!$task->users->contains(Auth::user())) {
+            return redirect()->back()->withErrors('You cant\'t complete tasks you do not work in.');
+        }
 
-        if (!$task) {
-            return redirect()->back()->withErrors('The informed task does not exist.');
+        if ($task->trashed()) {
+            return redirect()->back()->withErrors('Task is already completed');
+        }
+
+        $task->delete();
+        
+        return redirect(route('project.task', [
+            $proj->id,
+            $task->id,
+        ]));
+    }
+
+    public function commentPost(Request $req, $projId, $taskId) {
+
+        [$proj, $task] = $this->validateIds($projId, $taskId);
+
+        if ($task == null || $proj == null) {
+            return redirect()->back()->withErrors('The informed data is not valid.');
         }
 
         if (Gate::denies('comment-task', $task)) {
@@ -134,5 +144,20 @@ class TaskController extends Controller
         return view('components.comment', [
             'comment' => $comment,
         ]);
+    }
+
+    private function validateIds($projId = null, $taskId = null) {
+        $proj = null;
+        $task = null;
+
+        if ($projId) {
+            $proj = Project::find($projId);
+        }
+
+        if ($proj && $taskId) {
+            $task = $proj->tasks()->where('id', $taskId)->first();
+        }
+
+        return [$proj, $task];
     }
 }

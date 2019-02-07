@@ -41,7 +41,25 @@ class TaskObserver
      */
     public function deleted(Task $task)
     {
-        //
+        $names = [];
+        foreach($task->users as $user) {
+            $names[] = $user->name;
+
+            // Um log para cada usuário
+            Log::create([
+                'user_id' => $user->id,
+                'message' => "$user->name completou a tarefa \"$task->name\"",
+            ]);
+        }
+
+        $names = join(", ", $names);
+
+        // Um log para a tarefa
+        Log::create([
+            'task_id' => $task->id,
+            'project_id' => $task->project->id,
+            'message' => "O(s) usuário(s) $names concluíram a tarefa \"$task->name\"",
+        ]);
     }
 
     /**

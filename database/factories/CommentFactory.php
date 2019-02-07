@@ -3,7 +3,7 @@
 use Faker\Generator as Faker;
 
 function _comment_factory_(Faker $faker) {
-    
+
     $proj = App\Project::All()->random();
 
     $users = $proj->users()->get();

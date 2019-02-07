@@ -5,7 +5,7 @@
             <p class="card-text">{!! nl2br(e($task->description)) !!}</p>
 
             <a href="{{ route('project.task', [$task->project->id, $task->id]) }}" class="card-link">Ver Tarefa</a>
-            @if ($task->project->users->contains(Auth::user()))
+            @if (!$task->trashed() && $task->project->users->contains(Auth::user()))
                 @if (!$task->users->contains(Auth::user()))
                     <a href="{{ route('project.task.join', [$task->project->id, $task->id]) }}" class="card-link btn btn-success">Juntar-se</a>
                 @else
