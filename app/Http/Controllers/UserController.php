@@ -76,6 +76,21 @@ class UserController extends Controller
 
     public function report($id) {
 
-        
+        $user = User::find($id);
+
+        if ($user == null) {
+            return redirect()->back()->withErrors('Ação inválida');
+        }
+
+        if (Gate::denies('check-user-report', $user)) {
+            return redirect()->back()->withErrors('Você não tem permissão para isso');
+        }
+
+        $completedTasks = $user->tasks()->onlyTrashed()->get()->count();
+
+        return view('user-report', [
+            'user' => $user,
+            'completed' => $completedTasks,
+        ]);
     }
 }

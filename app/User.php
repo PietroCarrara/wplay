@@ -62,6 +62,10 @@ class User extends Authenticatable
         return $rel;
     }
 
+    public function comments() {
+        return $this->hasMany('App\Comment');
+    }
+
     public function logs() {
         return $this->hasMany('App\Log');
     }
