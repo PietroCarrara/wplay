@@ -51,22 +51,7 @@
                 </div>
                 <div class="modal-body">
                     <div id="createClientErrors"></div>
-                    <form id="createClientForm">
-                        @csrf
-                        <div class="form-group">
-                            <label for="clientName">Nome</label>
-                            <input type="text" class="form-control" id="clientName" name="name" placeholder="Nome Do Cliente">
-                        </div>
-                        <div class="form-group">
-                            <label for="clientName">Contato 1</label>
-                            <input type="text" class="form-control" id="clientContact1" name="contact1" placeholder="Opção de contato 1">
-                        </div>
-                        <div class="form-group">
-                            <label for="clientName">Contato 2</label>
-                            <input type="text" class="form-control" id="clientContact2" name="contact2" placeholder="Opção de contato 2">
-                        </div>
-                    </form>
-
+                    @include('components.client-form')
                 </div>
                 <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>

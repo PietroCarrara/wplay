@@ -17,9 +17,15 @@ Route::get('/login', 'AuthController@login')->name('login');
 Route::post('/login', 'AuthController@loginPost')->name('login.post');
 
 Route::get('/register', 'AuthController@register')->name('register');
-Route::post('/register', 'AuthController@registerPost')->name('register');
+Route::post('/register', 'AuthController@registerPost')->name('register.post');
 
 Route::get('/logout', 'AuthController@logout')->name('logout');
+
+Route::get('/client/create', 'ClientController@create')->name('client.create.post');
+Route::post('/client/create', 'ClientController@createPost')->name('client.create');
+Route::get('/client/search', 'ClientController@search')->name('client.search');
+Route::get('/client/{id}', 'ClientController@show')->name('client.show');
+Route::post('/client/{id}', 'ClientController@edit')->name('client.edit');
 
 Route::get('/user/search', 'UserController@search')->name('user.search');
 Route::get('/user/{id}/makeadmin', 'UserController@makeAdmin')->name('user.makeadmin');
@@ -41,6 +47,6 @@ Route::post('/project/{id}', 'ProjectController@editPost')->name('project.edit.p
 Route::get('/project/{id}/report', 'ProjectController@report')->name('project.report');
 
 // Rotas para o JS
-Route::post('/api/client/create', 'ClientController@create')->name('api.client.create');
+Route::post('/api/client/create', 'ClientController@createPost')->name('api.client.create');
 
 Route::get('/api/user/search', 'UserController@search')->name('api.user.search');

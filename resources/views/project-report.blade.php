@@ -43,6 +43,9 @@
                     <div class="col-md-6 my-2">
                         <strong>Projeto criado em:</strong> {{ $proj->created_at->format('d/m/Y H:i') }}
                     </div>
+                    <div class="col-md-6 my-2">
+                        <strong>Encomendado por:</strong> @include('components.client-link', ['client' => $proj->client])
+                    </div>
                     @if (!($end || $start))
                     <div class="col-md-6 my-2">
                         <strong>Membros trabalhando atualmente:</strong> {{ $proj->users()->count() }}

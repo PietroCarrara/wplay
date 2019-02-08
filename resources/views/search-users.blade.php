@@ -20,23 +20,23 @@
                 <div class="my-4">
                     <table class="table table-hover">
                         <tbody>
-                            <tr>
-                                @forelse($users as $user)
-                                <td>{{ $user->name }}</td>
-                                <td class="text-right">
-                                    @if ($user->role != 'admin')
-                                    <a href="{{ route('user.makeadmin', $user->id) }}" class="btn btn-success">Tornar
-                                        admin</a>
-                                    @else
-                                    <a href="{{ route('user.removeadmin', $user->id) }}" class="btn btn-danger">Remover
-                                        admin</a>
-                                    @endif
-                                </td>
-                                <td class="text-right">
-                                    <a href="{{ route('user.report', $user->id) }}" class="btn btn-primary">Ver
-                                        relatórios</a>
-                                </td>
-                            </tr>
+                            @forelse($users as $user)
+                                <tr>
+                                    <td>{{ $user->name }}</td>
+                                    <td class="text-right">
+                                        @if ($user->role != 'admin')
+                                        <a href="{{ route('user.makeadmin', $user->id) }}" class="btn btn-success">Tornar
+                                            admin</a>
+                                        @else
+                                        <a href="{{ route('user.removeadmin', $user->id) }}" class="btn btn-danger">Remover
+                                            admin</a>
+                                        @endif
+                                    </td>
+                                    <td class="text-right">
+                                        <a href="{{ route('user.report', $user->id) }}" class="btn btn-primary">Ver
+                                            relatórios</a>
+                                    </td>
+                                </tr>
                             @empty
                             Não há resultados.
                             @endforelse

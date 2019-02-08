@@ -1,0 +1,1 @@
+<a href="{{ route('client.show', $client->id) }}">{{ $client->name }}</a>

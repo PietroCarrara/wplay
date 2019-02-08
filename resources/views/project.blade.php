@@ -9,7 +9,7 @@
     <div class="card-body">
         <div class="row">
             <div class="col-md-9">
-                <strong>Projeto encomendado por: </strong> {{ $project->client->name }}
+                <strong>Projeto encomendado por: </strong> @include('components.client-link', ['client' => $project->client])
                 <h5 class="mt-4">Descrição:</h5>
                 <p>{!! nl2br(e($project->description)) !!}</p>
             </div>
@@ -78,7 +78,7 @@
                 <form method="POST" action="{{ route('project.tasks.create.post', $project->id) }}">
                     @include('components.errors')
                     @csrf
-                    @include('components.task-form')
+                    @include('components.client-form')
                     <button type="submit" class="btn btn-primary">Salvar</button>
                 </form>
             </div>
