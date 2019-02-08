@@ -5,11 +5,10 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use \App\Relations\ObservableBelongsToMany;
 
 class User extends Authenticatable
 {
-    use SoftDeletes;
+    use SoftDeletes, ObservableRelationModel;
 
     /**
      * The attributes that are mass assignable.
@@ -30,52 +29,15 @@ class User extends Authenticatable
     ];
 
     public function tasks() {
-        $rel = new ObservableBelongsToMany(
-            \App\Task::query(),
-            $this,
-            'task_user',
-            'user_id',
-            'task_id',
-            'id',
-            'id',
-            'TaskUser'
-        );
-
-        $rel->using('App\TaskUser');
-
-        return $rel;
+        return $this->observableBelongsToMany('App\Task', 'task_user')->using('App\TaskUser');
     }
 
     public function projects() {
-        $rel = new ObservableBelongsToMany(
-            Project::query(),
-            $this,
-            'project_user',
-            'user_id',
-            'project_id',
-            'id',
-            'id',
-            'projects'
-        );
-        $rel->using('App\ProjectUser');
-
-        return $rel;
+        return $this->observableBelongsToMany('App\Project')->using('App\ProjectUser');
     }
 
     public function votes() {
-        $rel = new ObservableBelongsToMany(
-            Task::query(),
-            $this,
-            'task_user_vote',
-            'user_id',
-            'project_id',
-            'id',
-            'id',
-            'votes'
-        );
-        $rel->using('App\TaskUserVote');
-
-        return $rel;
+        return $this->observableBelongsToMany('App\Task', 'task_user_vote')->using('App\TaskUserVote');
     }
 
     public function controls() {

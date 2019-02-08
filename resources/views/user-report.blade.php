@@ -60,20 +60,24 @@
                 <h3>Atividades</h3>
                 <div class="row">
                     @php($tmpDate = '')
-                    @foreach($logs->orderBy('created_at')->get() as $log)
-                    @if ($tmpDate != $log->created_at->format('d/m'))
-                    @php($tmpDate = $log->created_at->format('d/m'))
-                    <div class="col-md-12 text-center">
-                        <h4>{{ $tmpDate }}</h4>
-                    </div>
-                    @endif
-                    <div class="col-md-10 my-1">
-                        {!! $log->render() !!}
-                    </div>
-                    <div class="col-md-2 my-1 text-right">
-                        {{ $log->created_at->format('H:i') }}
-                    </div>
-                    @endforeach
+                    @forelse($logs->orderBy('created_at')->get() as $log)
+                        @if ($tmpDate != $log->created_at->format('d/m'))
+                            @php($tmpDate = $log->created_at->format('d/m'))
+                            <div class="col-md-12 text-center">
+                                <h4>{{ $tmpDate }}</h4>
+                            </div>
+                        @endif
+                        <div class="col-md-10 my-1">
+                            {!! $log->render() !!}
+                        </div>
+                        <div class="col-md-2 my-1 text-right">
+                            {{ $log->created_at->format('H:i') }}
+                        </div>
+                    @empty
+                        <div class="col-md-10 my-1">
+                            Nada encontrado.
+                        </div>
+                    @endforelse
                 </div>
             </div>
         </div>

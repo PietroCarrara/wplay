@@ -1,5 +1,5 @@
 @include('components.errors')
-<form method="POST">
+<form id="projectForm" method="POST">
     @csrf
     <div class="form-group">
         <label for="projectName">Nome</label>

@@ -3,12 +3,11 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Relations\ObservableBelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Task extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, ObservableRelationModel;
 
     public $fillable = [
         'name', 'description', 'project_id'
@@ -27,36 +26,10 @@ class Task extends Model
     }
 
     public function users() {
-        $rel = new ObservableBelongsToMany(
-            \App\User::query(),
-            $this,
-            'task_user',
-            'task_id',
-            'user_id',
-            'id',
-            'id',
-            'TaskUser'
-        );
-
-        $rel->using('App\TaskUser');
-
-        return $rel;
+        return $this->observableBelongsToMany('App\User', 'task_user')->using('App\TaskUser');
     }
 
     public function votes() {
-        $rel = new ObservableBelongsToMany(
-            \App\User::query(),
-            $this,
-            'task_user_vote',
-            'task_id',
-            'user_id',
-            'id',
-            'id',
-            'votes'
-        );
-
-        $rel->using('App\TaskUserVote');
-
-        return $rel;
+        return $this->observableBelongsToMany('App\User', 'task_user_vote')->using('App\TaskUserVote');
     }
 }
