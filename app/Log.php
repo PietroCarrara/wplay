@@ -29,15 +29,15 @@ class Log extends Model
     public function render() {
         $msg = htmlspecialchars($this->message);
         
-        if ($this->project) {
+        if ($proj = $this->project()->withTrashed()->get()->first()) {
             $msg = str_replace(':project:', view('components.project-link', [
-                'project' => $this->project
+                'project' => $proj,
             ]), $msg);
         }
 
-        if ($this->task()->withTrashed()->count() > 0) {
+        if ($task = $this->task()->withTrashed()->get()->first()) {
             $msg = str_replace(':task:', view('components.task-link', [ 
-                'task' => $this->task()->withTrashed()->get()->first()
+                'task' => $task,
             ]), $msg);
         }
 

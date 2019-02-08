@@ -48,7 +48,13 @@
                     </div>
                     @if (!($end || $start))
                     <div class="col-md-6 my-2">
-                        <strong>Membros trabalhando atualmente:</strong> {{ $proj->users()->count() }}
+                        @if ($proj->trashed())
+                            <strong>Membros que trabalhavam até o encerramento:</strong>
+                        @else
+                            <strong>Membros trabalhando atualmente:</strong>
+                        @endif
+                        
+                        {{ $proj->users()->count() }}
                     </div>
                     @endif
                     <div class="col-md-6 my-2">

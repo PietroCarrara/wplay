@@ -19,7 +19,7 @@
                         <strong>Total de projetos encomendados:</strong> {{ $client->projects()->count() }}
                     </div>
                     <div class="col-md-6 my-2">
-                        <strong>Total de projetos encerrados:</strong> 0
+                        <strong>Total de projetos encerrados:</strong> {{ $client->projects()->onlyTrashed()->count() }}
                     </div>
                     <div class="col-md-6 my-2">
                         <strong>Contato 1:</strong> {{ $client->contact1 }}

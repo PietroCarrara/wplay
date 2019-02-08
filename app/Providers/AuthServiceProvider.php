@@ -37,11 +37,11 @@ class AuthServiceProvider extends ServiceProvider
         });
 
         Gate::define('manage-tasks', function($user, Project $proj) {
-            return $user->roles == 'admin' || $proj->users->contains($user);;
+            return !$proj->trashed() && ($user->roles == 'admin' || $proj->users->contains($user));
         });
 
         Gate::define('comment-task', function($user, Task $task) {
-            return !$task->trashed() && $task->users->contains($user);
+            return !$task->project()->withTrashed()->get()->first()->trashed() && (!$task->trashed() && $task->users->contains($user));
         });
 
         Gate::define('manage-users', function($user) {

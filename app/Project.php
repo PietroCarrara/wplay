@@ -13,6 +13,10 @@ class Project extends Model
         'name', 'description', 'client_id'
     ];
 
+    protected $dates = [
+        'deleted_at',
+    ];
+
     public function tasks() {
         return $this->hasMany('App\Task');
     }

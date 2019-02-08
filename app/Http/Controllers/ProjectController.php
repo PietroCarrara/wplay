@@ -15,7 +15,7 @@ class ProjectController extends Controller
 
     public function show($id) {
         return view('project', [
-            'project' => Project::find($id),
+            'project' => Project::withTrashed()->find($id),
         ]);
     }
 
@@ -54,12 +54,12 @@ class ProjectController extends Controller
     public function editPost(Request $req, $id) {
 
         if (Gate::denies('manage-projects')) {
-            return response('Unauthorized.', 403);
+            return redirect()->back()->withErrors('Invalid action');
         }
 
         $proj = Project::find($id);
         if (!$proj) {
-            return respose('Not Found.', 404);
+            return redirect()->back()->withErrors('Invalid action');
         }
 
         $req->validate([
@@ -97,12 +97,29 @@ class ProjectController extends Controller
 
     public function showAll() {
         return view('all-projects',[
-            'projects' => Project::All()
+            'projects' => Project::All(),
+            'terminated' => Project::onlyTrashed()->get(),
         ]);
     }
 
-    public function report(Request $req, $id) {
+    public function terminate($id) {
+        if (Gate::denies('manage-projects')) {
+            return redirect()->back()->withErrors('Você não tem permissão para fazer isso.');
+        }
+
         $proj = Project::find($id);
+
+        if (!$proj) {
+            return redirect()->back()->withErrors('Ação inválida.');
+        }
+
+        $proj->delete();
+
+        return redirect(route('project', $proj->id));
+    }
+
+    public function report(Request $req, $id) {
+        $proj = Project::withTrashed()->find($id);
 
         if ($proj == null) {
             return redirect()->back()->withErrors('Ação inválida');

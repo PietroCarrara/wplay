@@ -41,9 +41,9 @@ class TaskUserObserver
         $log = Log::create([
             'project_id' => $task->project_id,
             'task_id' => $task->id,
-            'message' => ":user: deixou a tarefa \":task:\"",
+            'message' => ":users: deixou a tarefa \":task:\"",
         ]);
-            
+    
         $log->users()->save($user);
     }
 

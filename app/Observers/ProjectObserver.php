@@ -40,7 +40,10 @@ class ProjectObserver
      */
     public function deleted(Project $project)
     {
-        //
+        Log::create([
+            'project_id' => $project->id,
+            'message' => "O projeto \":project:\" foi encerrado.",
+        ]);
     }
 
     /**

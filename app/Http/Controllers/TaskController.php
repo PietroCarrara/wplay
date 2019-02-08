@@ -93,6 +93,7 @@ class TaskController extends Controller
 
         return view('task', [
             'task' => $task,
+            'project' => $task->project()->withTrashed()->get()->first(),
         ]);
     }
 

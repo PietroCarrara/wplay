@@ -30,16 +30,44 @@
             <div class="row mx-1">
                 <div class="col-md-12">
                     @if (Gate::allows('manage-projects'))
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editProjModal">
-                        Editar
-                    </button>
+                        @if(!$project->trashed())
+                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#terminateProjModal">
+                                Encerrar Projeto
+                            </button>
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editProjModal">
+                                Editar
+                            </button>
+                        @else
+                            <strong>Este projeto foi encerrado em {{ $project->deleted_at->format('d/m/Y') }}</strong>
+                        @endif
                     @endif
                     @if (Gate::allows('check-project-report', $project))
-                    <a class="btn btn-primary" href="{{ route('project.report', $project->id) }}">
-                        Relatório
-                    </a>
+                        <a class="btn btn-primary" href="{{ route('project.report', $project->id) }}">
+                            Relatório
+                        </a>
                     @endif
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{-- Modal de encerramento do projeto --}}
+<div class="modal fade" id="terminateProjModal" tabindex="-1" role="dialog" aria-labelledby="terminateProjModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="terminateProjModalLabel">Encerrar o Projeto</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h1>Tem certeza que deseja <strong>encerrar</strong> o projeto?</h1>
+            </div>
+            <div class="modal-footer">
+                <a href="{{ route('project.terminate', $project->id) }}" class="btn btn-danger">Encerrar</a>
             </div>
         </div>
     </div>
@@ -78,7 +106,7 @@
                 <form method="POST" action="{{ route('project.tasks.create.post', $project->id) }}">
                     @include('components.errors')
                     @csrf
-                    @include('components.client-form')
+                    @include('components.task-form')
                     <button type="submit" class="btn btn-primary">Salvar</button>
                 </form>
             </div>
@@ -88,7 +116,11 @@
 
 <div class="row my-4">
     <div class="col-md-12">
-        <h1>Tarefas em andamento</h1>
+        <h1>Tarefas
+        @if ($project->trashed())
+            que estavam
+        @endif
+        em andamento</h1>
 
         <div class="row my-4">
             @forelse($project->tasks as $task)
@@ -108,7 +140,11 @@
 
 <div class="row my-4">
     <div class="col-md-12">
-        <h1>Tarefas completadas</h1>
+        <h1>Tarefas
+        @if ($project->trashed())
+            que estavam
+        @endif
+        completas</h1>
 
         <div class="row my-4">
             @forelse($project->tasks()->onlyTrashed()->get() as $task)

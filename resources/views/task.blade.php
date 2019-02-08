@@ -3,7 +3,7 @@
 @section('content')
 <div class="card my-4">
     <div class="card-header">
-        <a href="{{ route('project', $task->project->id) }}">{{ $task->project->name }}</a> / {{ $task->name }}
+        <a href="{{ route('project', $project->id) }}">{{ $project->name }}</a> / {{ $task->name }}
     </div>
     <div class="card-body">
         <div class="row">
@@ -37,16 +37,16 @@
             <strong>Votos para completar:</strong> {{ $task->votes()->count() }} / {{ ceil($task->users()->count() / 2) }}<br/>
         @endif
 
-        @if (!$task->trashed() && $task->project->users->contains(Auth::user()))
+        @if ($task->project && !$task->trashed() && $task->project()->withTrashed()->get()->first()->users->contains(Auth::user()))
             @if (!$task->users->contains(Auth::user()))
-                <a href="{{ route('project.task.join', [$task->project->id, $task->id]) }}" class="btn btn-success">Juntar-se</a>
+                <a href="{{ route('project.task.join', [$project->id, $task->id]) }}" class="btn btn-success">Juntar-se</a>
             @else
                 @if ($task->votes->contains(Auth::user()))
-                    <a href="{{ route('project.task.vote', [$task->project->id, $task->id]) }}" class="btn btn-warning">Revogar voto</a>
+                    <a href="{{ route('project.task.vote', [$project->id, $task->id]) }}" class="btn btn-warning">Revogar voto</a>
                 @else
-                    <a href="{{ route('project.task.vote', [$task->project->id, $task->id]) }}" class="btn btn-success">Votar para completar</a>
+                    <a href="{{ route('project.task.vote', [$project->id, $task->id]) }}" class="btn btn-success">Votar para completar</a>
                 @endif
-                <a href="{{ route('project.task.quit', [$task->project->id, $task->id]) }}" class="btn btn-danger">Sair</a>
+                <a href="{{ route('project.task.quit', [$project->id, $task->id]) }}" class="btn btn-danger">Sair</a>
             @endif
         @endif
 
@@ -102,7 +102,7 @@ function postComment(event) {
 
     console.log(formData.entries());
 
-    fetch('{{ route("project.task.comment.create.post", [$task->project->id, $task->id]) }}', {
+    fetch('{{ route("project.task.comment.create.post", [$project->id, $task->id]) }}', {
         method: 'POST',
         body: formData,
         headers: {

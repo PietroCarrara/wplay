@@ -51,7 +51,9 @@
                 </div>
                 <div class="modal-body">
                     <div id="createClientErrors"></div>
-                    @include('components.client-form')
+                    @include('components.client-form', [
+                        'client' => null,
+                    ])
                 </div>
                 <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
