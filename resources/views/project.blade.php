@@ -8,13 +8,9 @@
     </div>
     <div class="card-body">
         <div class="row">
-            @if(Gate::allows('manage-projects'))
-            <div class="col-md-12">
-                @include('components.project-form')
-            </div>
-            @else
-            <div class="col-md-8">
-                <h5>Descrição:</h5>
+            <div class="col-md-9">
+                <strong>Projeto encomendado por: </strong> {{ $project->client->name }}
+                <h5 class="mt-4">Descrição:</h5>
                 <p>{!! nl2br(e($project->description)) !!}</p>
             </div>
             <div class="col-md-3">
@@ -31,7 +27,38 @@
                     </ul>
                 </div>
             </div>
-            @endif
+            <div class="row mx-1">
+                <div class="col-md-12">
+                    @if (Gate::allows('manage-projects'))
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editProjModal">
+                        Editar
+                    </button>
+                    @endif
+                    @if (Gate::allows('check-project-report', $project))
+                    <a class="btn btn-primary" href="{{ route('project.report', $project->id) }}">
+                        Relatório
+                    </a>
+                    @endif
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{-- Modal de edição do projeto --}}
+<div class="modal fade" id="editProjModal" tabindex="-1" role="dialog" aria-labelledby="editProjModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editProjModalLabel">Editar Projeto</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                @include('components.project-form')
+            </div>
         </div>
     </div>
 </div>

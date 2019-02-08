@@ -7,8 +7,8 @@
     <div class="card-footer text-muted">
         <a href="{{ route('project', [ 'id' => $project->id ]) }}" class="card-link">Ver Projeto</a>
 
-        @if (Gate::allows('manage-projects'))
-        <a class="card-link" style="color: red;">Deletar Projeto</a>
+        @if(Gate::allows('check-project-report', $project))
+            <a href="{{ route('project.report', $project->id) }}" style="color: white;" class="btn btn-primary">Relatório</a>
         @endif
     </div>
     @endauth

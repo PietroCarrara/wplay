@@ -38,6 +38,7 @@ Route::get('/project/create', 'ProjectController@create')->name('project.create'
 Route::post('/project/create', 'ProjectController@createPost')->name('project.create.post');
 Route::get('/project/{id}', 'ProjectController@show')->name('project');
 Route::post('/project/{id}', 'ProjectController@editPost')->name('project.edit.post');
+Route::get('/project/{id}/report', 'ProjectController@report')->name('project.report');
 
 // Rotas para o JS
 Route::post('/api/client/create', 'ClientController@create')->name('api.client.create');

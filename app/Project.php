@@ -18,6 +18,14 @@ class Project extends Model
         return $this->hasMany('App\Task');
     }
 
+    public function logs() {
+        return $this->hasMany('App\Log');
+    }
+
+    public function client() {
+        return $this->belongsTo('App\Client');
+    }
+
     public function users() {
         $rel = new ObservableBelongsToMany(
             \App\User::query(),
