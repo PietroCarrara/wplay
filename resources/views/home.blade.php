@@ -15,13 +15,14 @@
     
     <h3>Tarefas em que você trabalha</h3>
     <div class="row my-4">
-        @forelse (Auth::user()->tasks as $task)
+        @foreach (Auth::user()->tasks as $task)
+        @if (!$task->project) 
+            @continue
+        @endif
             <div class="col-md-4">
                 @include('components.task-card')
             </div>
-        @empty
-            Você não está trabalhando em nenhuma tarefa!
-        @endforelse
+        @endforeach
     </div>
 
     @if (Gate::allows('manage-projects'))

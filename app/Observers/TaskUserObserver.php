@@ -45,6 +45,10 @@ class TaskUserObserver
         ]);
     
         $log->users()->save($user);
+
+        if ($task->votes()->count() >= $task->users()->count() / 2) {
+            $task->delete();
+        }
     }
 
     /**
