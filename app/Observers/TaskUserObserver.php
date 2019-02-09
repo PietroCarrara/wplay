@@ -46,6 +46,10 @@ class TaskUserObserver
     
         $log->users()->save($user);
 
+		// Remover os votos do usuário ao sair da task
+		$user->votes()->detach($task);
+
+		// Recontar os votos, já que a equipe diminuiu
         if ($task->votes()->count() >= $task->users()->count() / 2) {
             $task->delete();
         }
